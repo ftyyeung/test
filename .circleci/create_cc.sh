@@ -2,6 +2,10 @@
 
 run () {
   fetch_circleci_job
+  echo "1. ${CIRCLE_PULL_REQUESTS}"
+  echo "2. ${CIRCLE_BUILD_URL}"
+  echo "3. ${CIRCLE_PR_REPONAME}"
+  export
 }
 
 fetch () {
