@@ -28,8 +28,9 @@ fetch_circleci_job () {
   do
     echo "$url"
     PULL_REQUEST_NUM="${url##*/}"
-    fetch https://api.github.com/repos/ftyyeung/${CIRCLE_PROJECT_REPONAME}/pulls/${PULL_REQUEST_NUM}/commits /tmp/pr-${PULL_REQUEST_NUM}-commits.json
-    cat /tmp/pr-${PULL_REQUEST_NUM}-commits-json
+    OUTPUT_FILE="pr${PULL_REQUEST_NUM}-commits.json"
+    fetch https://api.github.com/repos/ftyyeung/${CIRCLE_PROJECT_REPONAME}/pulls/${PULL_REQUEST_NUM}/commits /tmp/${OUTPUT_FILE}
+    cat /tmp/${OUTPUT_FILE}
   done
 }
 
