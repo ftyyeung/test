@@ -2,10 +2,8 @@
 
 run () {
   fetch_circleci_job
-  echo "1. ${CIRCLE_PULL_REQUESTS}"
+  echo "1. ${PULL_REQUESTS}"
   echo "2. ${CIRCLE_BUILD_URL}"
-  echo "3. ${CIRCLE_PR_REPONAME}"
-  export
 }
 
 fetch () {
@@ -24,7 +22,7 @@ fetch () {
 
 fetch_circleci_job () {
   fetch https://api.github.com/repos/ftyyeung/${CIRCLE_PROJECT_REPONAME}/commits/${CIRCLE_SHA1}/pulls /tmp/pullrequests.json
-  cat /tmp/pullrequests.json
+  PULL_REQUESTS=$(cat /tmp/pullrequests.json | jq '.[] | .html_url')
 }
 
 run
