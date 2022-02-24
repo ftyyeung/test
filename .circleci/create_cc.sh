@@ -9,9 +9,8 @@ run () {
   IFS=$'\n'
   for ticket in ${JIRA_TICKETS}
   do
-    echo "${JIRA_BASE_URL%/}/browse/${ticket}" > /tmp/jira_urls.txt
+    echo "${JIRA_BASE_URL%/}/browse/${ticket}"
   done
-  cat /tmp/jira_urls.txt
 }
 
 fetch () {
