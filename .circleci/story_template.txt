@@ -1,0 +1,12 @@
+{
+  "fields": {
+    "project": {
+      "key": "CC"
+    },
+    "summary": "<PROJECT> Deployment - <DESC>",
+    "description": "",
+    "issuetype": {
+	"name": "Story"
+    }
+  }
+}

@@ -4,7 +4,6 @@ run () {
   fetch_circleci_job
   echo "1. ${PULL_REQUESTS}"
   echo "2. ${CIRCLE_BUILD_URL}"
-  echo "3. ${JIRA_TICKETS}"
 
   IFS=$'\n'
   for ticket in ${JIRA_TICKETS}
@@ -47,7 +46,6 @@ fetch_circleci_job () {
     jq -r '.[] | .commit.message | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
   done 
 
-  cat /tmp/jira-ticket.txt
   JIRA_TICKETS=$(cat /tmp/jira-ticket.txt | uniq)
 }
 
