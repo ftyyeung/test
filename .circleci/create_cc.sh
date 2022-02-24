@@ -4,12 +4,13 @@ run () {
   fetch_circleci_job
   echo "1. ${PULL_REQUESTS}"
   echo "2. ${CIRCLE_BUILD_URL}"
-
-  IFS=$'\n'
-  for ticket in ${JIRA_TICKETS}
-  do
-    echo "${JIRA_BASE_URL%/}/browse/${ticket}"
-  done
+  echo "3. ${JIRA_TICKETS}"
+  
+  TEMPLATE_PATH='./circleci/story_template.json'
+  sed -i "s/<PROJECT>/${CIRCLE_PROJECT_REPONAME}/" ${TEMPLATE_PATH}
+  sed -i "s/<GIT_LINKS>/${PULL_REQUESTS}/" ${TEMPLATE_PATH}
+  sed -i "s/<CIRCLECI_BUILD>/${CIRCLE_BUILD_URL}/" ${TEMPLATE_PATH}
+  sed -i "s/<JIRA_LINKS>/${JIRA_TICKETS}" ${TEMPLATE_PATH}
 }
 
 fetch () {
@@ -46,6 +47,7 @@ fetch_circleci_job () {
     jq -r '.[] | .commit.message | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
   done 
 
+  sed -i -e "s/^/${JIRA_BASE_URL%\/}\/browse\//" jira-ticket.txt
   JIRA_TICKETS=$(cat /tmp/jira-ticket.txt | uniq)
 }
 
