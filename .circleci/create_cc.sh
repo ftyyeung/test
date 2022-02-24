@@ -24,7 +24,7 @@ fetch_circleci_job () {
   fetch https://api.github.com/repos/ftyyeung/${CIRCLE_PROJECT_REPONAME}/commits/${CIRCLE_SHA1}/pulls /tmp/pullrequests.json
   PULL_REQUESTS=$(jq -r '.[] | .html_url' < /tmp/pullrequests.json)
   IFS=$'\n'
-  for url in $(PULL_REQUESTS)    
+  for url in ${PULL_REQUESTS}    
   do
     echo "$url"
     PULL_REQUEST_NUM="${url##*/}"
