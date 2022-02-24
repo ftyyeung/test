@@ -1,20 +1,7 @@
-#!/bin/bash -eo pipefail
-: ${CIRCLE_TOKEN:?"Please provide a CircleCI API token for this orb to work!"} >&2
-if [[ $(echo $CIRCLE_REPOSITORY_URL | grep github.com) ]]; then
-  VCS_TYPE=github
-else
-  VCS_TYPE=bitbucket
-fi
+#!/bin/bash
 
 run () {
-  verify_api_key
   fetch_circleci_job
-}
-
-verify_api_key () {
-  URL="https://circleci.com/api/v2/me?circle-token=${CIRCLE_TOKEN}"
-  fetch $URL /tmp/me.json
-  jq -e '.login' /tmp/me.json
 }
 
 fetch () {
