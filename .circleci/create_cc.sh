@@ -7,7 +7,7 @@ run () {
 fetch () {
   URL="$1"
   OFILE="$2"
-  RESP=$(curl -w "%{http_code}" -s  --user "${CIRCLE_TOKEN}:"  \
+  RESP=$(curl -w "%{http_code}" -s  \
   -o "${OFILE}" \
   "${URL}")
 
