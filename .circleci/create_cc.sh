@@ -6,7 +6,7 @@ run () {
   echo "2. ${CIRCLE_BUILD_URL}"
   echo "3. ${JIRA_TICKETS}"
   
-  TEMPLATE_PATH='./circleci/story_template.json'
+  TEMPLATE_PATH='.circleci/story_template.json'
   sed -i "s/<PROJECT>/${CIRCLE_PROJECT_REPONAME}/g" ${TEMPLATE_PATH}
   PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed 's/\//\\\//g')
   sed -i "s/<GIT_LINKS>/${PULL_REQUESTS}/g" ${TEMPLATE_PATH}
