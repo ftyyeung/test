@@ -3,7 +3,7 @@
     "project": {
       "key": "CC"
     },
-    "summary": "test Deployment - <DESC>",
+    "summary": "<PROJECT> Deployment - <DESC>",
     "description": "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\n
 Every deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\n
 A list of changes to be compiled\n
@@ -11,13 +11,13 @@ Risk assessment and mitigation if necessary\n
 Team lead sign off\n
 Link to release PR in github\n\n
 Github link:\n
-https://asdf
+<GIT_LINKS>
 \n
 CircleCi link:\n
-https://circle
+<CIRCLECI_BUILD>
 \n
 CHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n
-TEST-1234
+<JIRA_LINKS>
 \n
 Risk / mitigation:\n",
     "issuetype": {

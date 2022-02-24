@@ -16,6 +16,8 @@ run () {
   sed -i "s/<JIRA_LINKS>/${JIRA_TICKETS}/g" ${TEMPLATE_PATH}
 
   cat ${TEMPLATE_PATH}
+
+  curl -d @.circleci/story_template.json -u franki10101@gmail.com:${JIRA_TOKEN} -X POST -H "Content-Type: application/json" https://ftyyeung.atlassian.net/rest/api/3/issue
 }
 
 fetch () {
