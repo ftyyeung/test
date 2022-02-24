@@ -9,8 +9,9 @@ run () {
   IFS=$'\n'
   for ticket in ${JIRA_TICKETS}
   do
-    echo "${JIRA_BASE_URL%/}/browse/${ticket}"
+    echo "${JIRA_BASE_URL%/}/browse/${ticket}" > /tmp/jira_urls.txt
   done
+  cat /tmp/jira_urls.txt
 }
 
 fetch () {
@@ -44,7 +45,7 @@ fetch_circleci_job () {
     PULL_REQUEST_NUM="${url##*/}"
     OUTPUT_FILE="pr${PULL_REQUEST_NUM}-commits.json"
     fetch https://api.github.com/repos/ftyyeung/${CIRCLE_PROJECT_REPONAME}/pulls/${PULL_REQUEST_NUM}/commits /tmp/${OUTPUT_FILE}
-    jq -r '.[] | .head.ref | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
+    jq -r '.[] | .commit.message | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
   done 
 
   cat /tmp/jira-ticket.txt
