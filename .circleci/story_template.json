@@ -12,7 +12,7 @@
                 "type": "paragraph",
                 "content": [
                     {
-                        "text": "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\n Every deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\nA list of changes to be compiled\n Risk assessment and mitigation if necessary\n Team lead sign off\n Link to release PR in github\n\n Github link:\n https://github.com/ftyyeung/test/pull/16 \n CircleCi link:\n https://circleci.com/gh/ftyyeung/test/81 \n CHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n <JIRA_LINKS> \nRisk / mitigation:\n",
+                        "text": "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\nEvery deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\nA list of changes to be compiled\nRisk assessment and mitigation if necessary\nTeam lead sign off\nLink to release PR in github\n\nGithub link:\n<GIT_LINKS>\nCircleCi link:\n<CIRCLECI_BUILD>\nCHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n<JIRA_LINKS>\nRisk / mitigation:\n",
                         "type": "text"
                     }
                 ]

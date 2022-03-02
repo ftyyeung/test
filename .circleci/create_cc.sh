@@ -9,10 +9,13 @@ run () {
   TEMPLATE_PATH='.circleci/story_template.json'
   sed -i "s/<PROJECT>/${CIRCLE_PROJECT_REPONAME}/g" ${TEMPLATE_PATH}
   PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed 's/\//\\\//g')
+  PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed -z "s/\n/\\\n/g")
   sed -i "s/<GIT_LINKS>/${PULL_REQUESTS}/g" ${TEMPLATE_PATH}
   CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed 's/\//\\\//g')
+  CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed -z "s/\n/\\\n/g")
   sed -i "s/<CIRCLECI_BUILD>/${CIRCLE_BUILD_URL}/g" ${TEMPLATE_PATH}
   JIRA_TICKETS=$(echo "$JIRA_TICKETS" | sed 's/\//\\\//g')
+  JIRA_TICEKTS=$(echo "$JIRA_TICKETS" | sed -z "s/\n/\\\n/g")
   sed -i "s/<JIRA_LINKS>/${JIRA_TICKETS}/g" ${TEMPLATE_PATH}
 
   cat ${TEMPLATE_PATH}
