@@ -62,8 +62,9 @@ fetch_circleci_job () {
     jq -r '.[] | .commit.message | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
   done 
 
-  ESCAPED_URL=$(echo "$JIRA_BASE_URL" | sed 's/\//\\\//g')
-  sed -i -e "s/^/${ESCAPED_URL%\/}\/browse\//" /tmp/jira-ticket.txt
+  ESCAPED_URL=${JIRA_BASE_URL%/}
+  ESCAPED_URL=$(echo "$ESCAPED_URL" | sed 's/\//\\\//g')
+  sed -i -e "s/^/${ESCAPED_URL}\/browse\//" /tmp/jira-ticket.txt
   cat /tmp/jira-ticket.txt
   JIRA_TICKETS=$(cat /tmp/jira-ticket.txt | uniq)
 }
