@@ -8,6 +8,9 @@ run () {
   
   TEMPLATE_PATH='.circleci/story_template.json'
   sed -i "s/<PROJECT>/${CIRCLE_PROJECT_REPONAME}/g" ${TEMPLATE_PATH}
+  PR_TITLE=$(echo "$PR_TITLE" | sed 's/\//\\\//g')
+  PR_TITLE=$(echo "$PR_TITLE" | sed -z "s/\n/\\\n/g")
+  sed -i "s/<DESC>/${PR_TITLE}/g" ${TEMPLATE_PATH}
   PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed 's/\//\\\//g')
   PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed -z "s/\n/\\\n/g")
   sed -i "s/<GIT_LINKS>/${PULL_REQUESTS}/g" ${TEMPLATE_PATH}
@@ -47,6 +50,8 @@ fetch_circleci_job () {
   jq -r '.[] | .title | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/pullrequests.json >> /tmp/jira-ticket.txt
   jq -r '.[] | .body | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/pullrequests.json >> /tmp/jira-ticket.txt
 
+  PR_TITLE=$(jq -r '.[0] | .title' < /tmp/pullrequests.json)
+
   # Parse all commits in pull requests for mentioned Jira Tickets
   IFS=$'\n'
   for url in ${PULL_REQUESTS}    
@@ -58,6 +63,7 @@ fetch_circleci_job () {
   done 
 
   sed -i -e "s/^/${JIRA_BASE_URL%\/}\/browse\//" /tmp/jira-ticket.txt
+  cat /tmp/jira-ticket.txt
   JIRA_TICKETS=$(cat /tmp/jira-ticket.txt | uniq)
 }
 
