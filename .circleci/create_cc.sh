@@ -8,17 +8,17 @@ run () {
   
   TEMPLATE_PATH='.circleci/story_template.json'
   sed -i "s/<PROJECT>/${CIRCLE_PROJECT_REPONAME}/g" ${TEMPLATE_PATH}
-  PR_TITLE=$(echo "$PR_TITLE" | sed 's/\//\\\//g')
   PR_TITLE=$(echo "$PR_TITLE" | sed -z "s/\n/\\\n/g")
+  PR_TITLE=$(echo "$PR_TITLE" | sed 's/\//\\\//g')
   sed -i "s/<DESC>/${PR_TITLE}/g" ${TEMPLATE_PATH}
-  PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed 's/\//\\\//g')
   PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed -z "s/\n/\\\n/g")
+  PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed 's/\//\\\//g')
   sed -i "s/<GIT_LINKS>/${PULL_REQUESTS}/g" ${TEMPLATE_PATH}
-  CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed 's/\//\\\//g')
   CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed -z "s/\n/\\\n/g")
+  CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed 's/\//\\\//g')
   sed -i "s/<CIRCLECI_BUILD>/${CIRCLE_BUILD_URL}/g" ${TEMPLATE_PATH}
-  JIRA_TICKETS=$(echo "$JIRA_TICKETS" | sed 's/\//\\\//g')
   JIRA_TICEKTS=$(echo "$JIRA_TICKETS" | sed -z "s/\n/\\\n/g")
+  JIRA_TICKETS=$(echo "$JIRA_TICKETS" | sed 's/\//\\\//g')
   sed -i "s/<JIRA_LINKS>/${JIRA_TICKETS}/g" ${TEMPLATE_PATH}
 
   cat ${TEMPLATE_PATH}
@@ -62,7 +62,8 @@ fetch_circleci_job () {
     jq -r '.[] | .commit.message | scan("[A-Z]{2,30}-[0-9]+")' < /tmp/${OUTPUT_FILE} >> /tmp/jira-ticket.txt
   done 
 
-  sed -i -e "s/^/${JIRA_BASE_URL%\/}\/browse\//" /tmp/jira-ticket.txt
+  ESCAPED_URL=$(echo "$JIRA_BASE_URL" | sed 's/\//\\\//g')
+  sed -i -e "s/^/${ESCAPED_URL%\/}\/browse\//" /tmp/jira-ticket.txt
   cat /tmp/jira-ticket.txt
   JIRA_TICKETS=$(cat /tmp/jira-ticket.txt | uniq)
 }
