@@ -51,19 +51,12 @@ workflows:
           post-steps:
             - jira/notify:
                 job_type: build
-      - create-release-ticket:
-          type: approval
-          filters:
-            branches:
-              only: main
-          requires:
-            - build
       - jira:
           filters:
             branches:
               only: main
           requires:
-            - create-release-ticket
+            - build
       - request-approval:
           type: approval
           filters:
