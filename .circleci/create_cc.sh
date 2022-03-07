@@ -37,7 +37,7 @@ Risk / mitigation:
 						type: "paragraph",
 						content: [
 							{
-								text: $content,
+								text: $desc,
 								type: "text"
 							}
 						]
