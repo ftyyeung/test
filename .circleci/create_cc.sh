@@ -7,7 +7,7 @@ run () {
 
   JSON_STRING=$(jq -n \
     --arg project "${PROJECT_KEY}" \
-      --arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
+    --arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
     --arg desc "Based on SOP-80 https://app.qualio.com/reference/SOP-80
     
 Every deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:
