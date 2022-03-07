@@ -8,43 +8,40 @@ run () {
   echo "2. ${CIRCLE_BUILD_URL}"
   echo "3. ${JIRA_TICKETS}"
 
-  PR_TITLE=$(echo "$PR_TITLE" | sed -z "s/\n/\\\n/g")
-  PULL_REQUESTS=$(echo "$PULL_REQUESTS" | sed -z "s/\n/\\\n/g")
-  CIRCLE_BUILD_URL=$(echo "$CIRCLE_BUILD_URL" | sed -z "s/\n/\\\n/g")
-  JIRA_TICEKTS=$(echo "$JIRA_TICKETS" | sed -z "s/\n/\\\n/g")
-
-  JSON_BODY=$(cat << EOF
-  {
-    "fields": {
-      "project": {
-        "key": "${PROJECT_KEY}"
-      },
-      "summary": "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}",
-      "description": {
-          "type": "doc",
-          "version": 1,
-          "content": [
-              {
-                  "type": "paragraph",
-                  "content": [
-                      {
-                          "text": "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\nEvery deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\nA list of changes to be compiled\nRisk assessment and mitigation if necessary\nTeam lead sign off\nLink to release PR in github\n\nGithub link:\n${PULL_REQUESTS}\nCircleCi link:\n${CIRCLE_BUILD_URL}\nCHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n${JIRA_TICKETS}\nRisk / mitigation:\n",
-                          "type": "text"
-                      }
-                  ]
-              }
-          ]
-      },
-      "issuetype": {
-    "name": "Story"
-      }
-    }
-  }
-  EOF)
+  JSON_STRING=$(jq -n \
+	--arg project "${PROJECT_KEY}" \
+  --arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
+	--arg content "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\nEvery deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\nA list of changes to be compiled\nRisk assessment and mitigation if necessary\nTeam lead sign off\nLink to release PR in github\n\nGithub link:\n"${PULL_REQUESTS}"\nCircleCi link:\n${CIRCLE_BUILD_URL}\nCHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n${JIRA_TICKETS}\nRisk / mitigation:\n" \
+	'{
+		fields : {
+			project: { 
+				key: $project
+			}, 
+			summary: $summary,
+		    description: {
+				type: "doc",
+				version: 1,
+				content: [
+					{
+						type: "paragraph",
+						content: [
+							{
+								text: $content,
+								type: "text"
+							}
+						]
+					}
+				]
+			},
+			issuetype: {
+				name: "Story"
+			}
+		}
+	}')
   
-  echo ${JSON_BODY}
+  echo ${JSON_STRING}
 
-  curl -d ${JSON_BODY} -u franki10101@gmail.com:${JIRA_TOKEN} -X POST -H "Content-Type: application/json" https://ftyyeung.atlassian.net/rest/api/3/issue
+  curl -d ${JSON_STRING} -u franki10101@gmail.com:${JIRA_TOKEN} -X POST -H "Content-Type: application/json" https://ftyyeung.atlassian.net/rest/api/3/issue
 }
 
 fetch () {
