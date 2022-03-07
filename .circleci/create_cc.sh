@@ -8,7 +8,24 @@ run () {
   JSON_STRING=$(jq -n \
 	--arg project "${PROJECT_KEY}" \
   --arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
-	--arg content "Based on SOP-80 https://app.qualio.com/reference/SOP-80\n\nEvery deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:\nA list of changes to be compiled\nRisk assessment and mitigation if necessary\nTeam lead sign off\nLink to release PR in github\n\nGithub link:\n"${PULL_REQUESTS}"\nCircleCi link:\n${CIRCLE_BUILD_URL}\nCHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK\n${JIRA_TICKETS}\nRisk / mitigation:\n" \
+	JSON_STRING=$(jq -n \
+	--arg project "${PROJECT_KEY}" \
+  	--arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
+	--arg desc "Based on SOP-80 https://app.qualio.com/reference/SOP-80
+	
+Every deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:
+A list of changes to be compiled
+Risk assessment and mitigation if necessary
+Team lead sign off\nLink to release PR in github
+
+Github link:
+${PULL_REQUESTS}
+CircleCi link:
+${CIRCLE_BUILD_URL}
+CHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK
+${JIRA_TICKETS}
+Risk / mitigation:
+" \
 	'{
 		fields : {
 			project: { 
