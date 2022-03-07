@@ -4,9 +4,6 @@ PROJECT_KEY="CC"
 
 run () {
   fetch_circleci_job
-  echo "1. ${PULL_REQUESTS}"
-  echo "2. ${CIRCLE_BUILD_URL}"
-  echo "3. ${JIRA_TICKETS}"
 
   JSON_STRING=$(jq -n \
 	--arg project "${PROJECT_KEY}" \
@@ -41,7 +38,7 @@ run () {
   
   echo ${JSON_STRING}
 
-  curl -d ${JSON_STRING} -u franki10101@gmail.com:${JIRA_TOKEN} -X POST -H "Content-Type: application/json" https://ftyyeung.atlassian.net/rest/api/3/issue
+  curl -d "${JSON_STRING}" -u franki10101@gmail.com:${JIRA_TOKEN} -X POST -H "Content-Type: application/json" https://ftyyeung.atlassian.net/rest/api/3/issue
 }
 
 fetch () {
