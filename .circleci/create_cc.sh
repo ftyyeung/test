@@ -6,15 +6,14 @@ run () {
   fetch_circleci_job
 
   JSON_STRING=$(jq -n \
-	--arg project "${PROJECT_KEY}" \
-  	--arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
-	--arg desc "Based on SOP-80 https://app.qualio.com/reference/SOP-80
-	
+    --arg project "${PROJECT_KEY}" \
+      --arg summary "${CIRCLE_PROJECT_REPONAME} Deployment - ${PR_TITLE}" \
+    --arg desc "Based on SOP-80 https://app.qualio.com/reference/SOP-80
+    
 Every deployment to production with bug fix / non customer facing changes (to be governed by the above policy) requires:
 A list of changes to be compiled
 Risk assessment and mitigation if necessary
 Team lead sign off\nLink to release PR in github
-
 Github link:
 ${PULL_REQUESTS}
 CircleCi link:
@@ -23,32 +22,32 @@ CHANGE LIST GOES HERE AND IS UPDATED IN THIS TASK
 ${JIRA_TICKETS}
 Risk / mitigation:
 " \
-	'{
-		fields : {
-			project: { 
-				key: $project
-			}, 
-			summary: $summary,
-		    description: {
-				type: "doc",
-				version: 1,
-				content: [
-					{
-						type: "paragraph",
-						content: [
-							{
-								text: $desc,
-								type: "text"
-							}
-						]
-					}
-				]
-			},
-			issuetype: {
-				name: "Story"
-			}
-		}
-	}')
+    '{
+        fields : {
+            project: { 
+                key: $project
+            }, 
+            summary: $summary,
+            description: {
+                type: "doc",
+                version: 1,
+                content: [
+                    {
+                        type: "paragraph",
+                        content: [
+                            {
+                                text: $desc,
+                                type: "text"
+                            }
+                        ]
+                    }
+                ]
+            },
+            issuetype: {
+                name: "Story"
+            }
+        }
+    }')
   
   echo ${JSON_STRING}
 
